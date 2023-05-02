@@ -1,3 +1,15 @@
 <resources>
-    <string name="app_name">Student Schedualer C868</string>
+    <string name="app_name">Student Schedualer</string>
+    <string name="upcoming">Upcoming</string>
+    <string name="inProgress">In Progress</string>
+    <string name="completed">Completed</string>
+    <string name="dropped">Dropped</string>
+    <string name="planToTake">Plan to Take</string>
+    <string name="performance">Performance</string>
+    <string name="objective"> Objective</string>
+    <string name="save_button">Save</string>
+    <string name="terms_button">Terms</string>
+    <string name="courses_button">Courses</string>
+    <string name="assessments_button">Assessments</string>
+
 </resources>

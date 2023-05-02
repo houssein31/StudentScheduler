@@ -84,12 +84,13 @@ public class LoginActivity extends AppCompatActivity {
                     return; // Exit the method without logging in
                 }
 
-                String fullName = userDAO.getFullName(user);
+                String fullName = userDAO.getFullName(username);
                 // User logged in successfully
                 Toast.makeText(LoginActivity.this, "Logged in as " + fullName, Toast.LENGTH_SHORT).show();
 
                 // Start the main activity
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                intent.putExtra("username", username);
                 startActivity(intent);
                 finish();
             }

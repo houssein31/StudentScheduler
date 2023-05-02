@@ -34,4 +34,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
+    public void byPass(View view){
+        Intent i = new Intent(this, HomeActivity.class);
+        i.putExtra("username", "max438");
+        startActivity(i);
+    }
 }

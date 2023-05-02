@@ -2,6 +2,7 @@ package com.example.studentschedualerc868;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -13,11 +14,13 @@ import com.example.studentschedualerc868.db.Entities.User;
 import com.example.studentschedualerc868.db.DAOs.UserDAO;
 import com.example.studentschedualerc868.db.DatabaseConn;
 
+import org.junit.Test;
+
 public class SignupActivity extends AppCompatActivity {
     private EditText fullName, userName, passWord, confirmPassword;
     private Button registerButton;
 
-    private UserDAO userDAO;
+    public static UserDAO userDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,33 +49,37 @@ public class SignupActivity extends AppCompatActivity {
 
                 //Validations
 
-                // Check if username already exists
-                if (userDAO.getUserByUsername(userName.getText().toString()) != null) {
-                    Toast.makeText(SignupActivity.this, "Username already exists", Toast.LENGTH_SHORT).show();
-                    return; // Exit the method without inserting the user
-                }
-
-
-                // Check if password and confirm password match
-                if (!password.equals(confirmpassword)) {
-                    Toast.makeText(SignupActivity.this, "Password and confirm password do not match", Toast.LENGTH_SHORT).show();
-                    return; // Exit the method without inserting the user
-                }
-
-                // Check if password and confirm password meet requirements
-                if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{6,16}$") ||
-                        !confirmpassword.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{6,16}$")) {
-                    Toast.makeText(SignupActivity.this, "Password and confirm password must be between 6 and 16 characters and contain at least one uppercase and lowercase letter and one digit", Toast.LENGTH_SHORT).show();
-                    return; // Exit the method without inserting the user
-                }
-
-//// Check if password and confirm password meet requirements
-//                if (!password.matches("^(?=.*[a-z])(?=.*[A-Z]).{6,16}$") ||
-//                        !confirmpassword.matches("^(?=.*[a-z])(?=.*[A-Z]).{6,16}$")) {
-//                        Toast.makeText(SignupActivity.this, "Password and confirm password must be between 6 and 16 characters and contain at least one uppercase and lowercase letter", Toast.LENGTH_SHORT).show();
-//                        return; // Exit the method without inserting the user
+//                // Check if username already exists
+//                if (userDAO.getUserByUsername(userName.getText().toString()) != null) {
+//                    Toast.makeText(SignupActivity.this, "Username already exists", Toast.LENGTH_SHORT).show();
+//                    return; // Exit the method without inserting the user
 //                }
 
+
+                if (validateUsername(username)) {
+                    return;
+                }
+
+                if (validatePassword(password, confirmpassword)) {
+                    return;
+                }
+
+                if (validatePasswordRequirements(password, confirmpassword)) {
+                    return;
+                }
+
+//                // Check if password and confirm password match
+//                if (!password.equals(confirmpassword)) {
+//                    Toast.makeText(SignupActivity.this, "Password and confirm password do not match", Toast.LENGTH_SHORT).show();
+//                    return; // Exit the method without inserting the user
+//                }
+//
+//                // Check if password and confirm password meet requirements
+//                if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{6,16}$") ||
+//                        !confirmpassword.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{6,16}$")) {
+//                    Toast.makeText(SignupActivity.this, "Password and confirm password must be between 6 and 16 characters and contain at least one uppercase and lowercase letter and one digit", Toast.LENGTH_SHORT).show();
+//                    return; // Exit the method without inserting the user
+//                }
 
                 // Create new user
                 User newUser = new User(fullname, username, password);
@@ -92,6 +99,34 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
     }
+
+    public boolean validateUsername(String username) {
+        if (userDAO.getUserByUsername(username) != null) {
+            Toast.makeText(SignupActivity.this, "Username already exists", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        return false;
+    }
+
+
+    public boolean validatePassword(String password, String confirmPassword) {
+        if (!password.equals(confirmPassword)) {
+            Toast.makeText(SignupActivity.this, "Password and confirm password do not match", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        return false;
+    }
+
+    public boolean validatePasswordRequirements(String password, String confirmPassword) {
+        if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{6,16}$") ||
+                !confirmPassword.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{6,16}$")) {
+            Toast.makeText(SignupActivity.this, "Password and confirm password must be between 6 and 16 characters and contain at least one uppercase and lowercase letter and one digit", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        return false;
+    }
+
+
 }
 
 

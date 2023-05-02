@@ -5,18 +5,20 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity
-public class User {
+import java.util.List;
 
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "user_ID")
+@Entity(tableName = "user")
+public class User {
+    @PrimaryKey
+    @ColumnInfo(name = "user_name")
     @NonNull
-    private int userID;
+    private String username;
+
+//    @ColumnInfo(name = "term_ids")
+//    private List<Integer> termIds;
+
     @ColumnInfo(name = "full_name")
     private String fullname;
-
-    @ColumnInfo(name = "user_name")
-    private String username;
     @ColumnInfo(name = "password")
     private String password;
 
@@ -24,19 +26,21 @@ public class User {
         this.fullname = fullname;
         this.username = username;
         this.password = password;
+//        this.termIds = termIds;
     }
 
-    public int getUserID() {
-        return userID;
-    }
-
-    public void setUserID(int userID) {
-        this.userID = userID;
-    }
 
     public String getFullname() { return fullname; }
 
     public void setFullname(String fullname) { this.fullname = fullname; }
+
+//    public List<Integer> getTermIds() {
+//        return termIds;
+//    }
+//
+//    public void setTermIds(List<Integer> termIds) {
+//        this.termIds = termIds;
+//    }
 
     public String getUsername() {
         return username;
@@ -57,10 +61,12 @@ public class User {
     @Override
     public String toString() {
         return "user{" +
-                "userId=" + userID +
+                ", fullName" + fullname +
                 ", userName='" + username + '\'' +
                 ", password=" + password +
                 '}';
     }
 
 }
+
+

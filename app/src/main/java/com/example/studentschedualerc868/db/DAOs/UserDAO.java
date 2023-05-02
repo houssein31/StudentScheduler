@@ -15,8 +15,10 @@ public interface UserDAO {
     User getUserByUsername(String username);
 
 
-    @Query("SELECT full_name FROM user WHERE user_ID = :user_ID")
-    String getFullName(User user);
+    @Query("SELECT full_name FROM user WHERE user_name = :username")
+    String getFullName(String username);
+
+
 
 }
 
