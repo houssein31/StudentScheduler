@@ -56,17 +56,21 @@ public class SignupActivity extends AppCompatActivity {
 //                }
 
 
-                if (validateUsername(username)) {
+                if (validateUsername(registerButton, username)) {
                     return;
                 }
 
-                if (validatePassword(password, confirmpassword)) {
+                if (validatePassword(registerButton, password, confirmpassword)) {
                     return;
                 }
 
-                if (validatePasswordRequirements(password, confirmpassword)) {
+                if (validatePasswordRequirements(registerButton, password, confirmpassword)) {
                     return;
                 }
+
+//                if (validatePasswordRequirements(password, confirmpassword)) {
+//                    return;
+//                }
 
 //                // Check if password and confirm password match
 //                if (!password.equals(confirmpassword)) {
@@ -100,32 +104,34 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
-    public boolean validateUsername(String username) {
+    public static boolean validateUsername(View view, String username) {
         if (userDAO.getUserByUsername(username) != null) {
-            Toast.makeText(SignupActivity.this, "Username already exists", Toast.LENGTH_SHORT).show();
+            Context context = view.getContext();
+            Toast.makeText(context, "Username already exists", Toast.LENGTH_SHORT).show();
             return true;
         }
         return false;
     }
 
 
-    public boolean validatePassword(String password, String confirmPassword) {
+    public static boolean validatePassword(View view, String password, String confirmPassword) {
         if (!password.equals(confirmPassword)) {
-            Toast.makeText(SignupActivity.this, "Password and confirm password do not match", Toast.LENGTH_SHORT).show();
+            Context context = view.getContext();
+            Toast.makeText(context, "Password and confirm password do not match", Toast.LENGTH_SHORT).show();
             return true;
         }
         return false;
     }
 
-    public boolean validatePasswordRequirements(String password, String confirmPassword) {
+    public static boolean validatePasswordRequirements(View view, String password, String confirmPassword) {
         if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{6,16}$") ||
                 !confirmPassword.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{6,16}$")) {
-            Toast.makeText(SignupActivity.this, "Password and confirm password must be between 6 and 16 characters and contain at least one uppercase and lowercase letter and one digit", Toast.LENGTH_SHORT).show();
+            Context context = view.getContext();
+            Toast.makeText(context, "Password and confirm password must be between 6 and 16 characters and contain at least one uppercase and lowercase letter and one digit", Toast.LENGTH_SHORT).show();
             return true;
         }
         return false;
     }
-
 
 }
 

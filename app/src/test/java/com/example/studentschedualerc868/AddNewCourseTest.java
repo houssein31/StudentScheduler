@@ -1,6 +1,8 @@
 package com.example.studentschedualerc868;
 
+import com.example.studentschedualerc868.SignupActivity;
 import static com.example.studentschedualerc868.SignupActivity.validatePassword;
+import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -8,6 +10,7 @@ import android.content.Context;
 import android.text.Editable;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 
 import junit.framework.TestCase;
 
@@ -29,43 +32,20 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.example.studentschedualerc868.db.DAOs.UserDAO;
+import com.example.studentschedualerc868.db.Entities.Course;
 import com.example.studentschedualerc868.db.Entities.User;
 import com.google.android.material.textfield.TextInputLayout;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SignupActivityTest extends TestCase {
-
-    @Mock
-    UserDAO mockUserDAO;
+public class AddNewCourseTest {
 
 //    @Test
-//    public void testValidateUsername() {
-//        String username = "hkharro";
+//    public void testIsStatusRadioButtonSelected() {
+//        RadioGroup mockRadioGroup = mock(RadioGroup.class);
 //
-//        View mockView = mock(View.class);
+//        // Set up the mockRadioGroup behavior
+//        when(mockRadioGroup.getCheckedRadioButtonId()).thenReturn(123);
 //
-//        when(mockUserDAO.getUserByUsername(username)).thenReturn(new User());
-//        assertTrue(SignupActivity.validateUsername(mockView, username));
-//
+//        assertFalse(SignupActivity.isStatusRadioButtonSelected(mockRadioGroup));
 //    }
-
-    @Test
-    public void testValidatePassword() {
-        String password = "password123";
-        String confirmPassword = "password123";
-
-        View mockView = mock(View.class);
-
-        assertFalse(SignupActivity.validatePassword(mockView, password, confirmPassword));
-    }
-
-    @Test
-    public void testValidatePasswordRequirements() {
-        String password = "Password123";
-        String confirmPassword = "Password123";
-
-        View mockView = mock(View.class);
-
-        assertFalse(SignupActivity.validatePasswordRequirements(mockView, password, confirmPassword));
-    }
 }

@@ -150,10 +150,14 @@ public class AddNewCourse extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if (courseStatusInput.getCheckedRadioButtonId() == -1) {
+                if (!isStatusRadioButtonSelected(courseStatusInput)) {
                     Toast.makeText(getApplicationContext(), "Please select a term status", Toast.LENGTH_SHORT).show();
                     return;
                 }
+//                if (courseStatusInput.getCheckedRadioButtonId() == -1) {
+//                    Toast.makeText(getApplicationContext(), "Please select a term status", Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
                 if (courseStartDateButton.getText().toString().isEmpty()) {
                     Toast.makeText(getApplicationContext(), "Please enter a Start Date", Toast.LENGTH_SHORT).show();
                     return;
@@ -219,6 +223,10 @@ public class AddNewCourse extends AppCompatActivity {
 
     public void openCourseEndDatePicker(View view) {
         endDatePickerDialog.show();
+    }
+
+    public static boolean isStatusRadioButtonSelected(RadioGroup courseStatusInput) {
+        return courseStatusInput.getCheckedRadioButtonId() != -1;
     }
 
     private void launchMultiPageActivity() {
