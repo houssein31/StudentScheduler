@@ -52,7 +52,7 @@ public class EditTerm extends AppCompatActivity {
             username = extras.getString("username");
         }
 
-        Toast.makeText(this, String.valueOf(username), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, String.valueOf(username), Toast.LENGTH_SHORT).show();
         termTitleInput = findViewById(R.id.termTitleInput);
         termStartDateButton = findViewById(R.id.termStartDatePickerButton);
         termEndDateButton = findViewById(R.id.termEndDatePickerButton);
@@ -61,7 +61,7 @@ public class EditTerm extends AppCompatActivity {
 
 //        termID = getIntent().getIntExtra("termID", -1);
         Term term = termDAO.getTermByID(termID);
-        Toast.makeText(this, String.valueOf(termID), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, String.valueOf(termID), Toast.LENGTH_SHORT).show();
 
 
         termTitleInput.setText(term.getTermTitle());

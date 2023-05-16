@@ -49,7 +49,7 @@ public class DisplayAssessment extends AppCompatActivity {
 
         courseDAO = DatabaseConn.getDBInstance(getApplicationContext()).getCourseDao();
         assessmentDAO = DatabaseConn.getDBInstance(getApplicationContext()).getAssessmentDao();
-        Toast.makeText(this, String.valueOf(assessmentID), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, String.valueOf(assessmentID), Toast.LENGTH_SHORT).show();
 
         assessment = assessmentDAO.getAssessmentByID(assessmentID);
 

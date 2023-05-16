@@ -187,11 +187,9 @@ public class EditCourse extends AppCompatActivity {
 
                 String selectedTerm = autoCompleteTextView.getText().toString();
 
-//                Toast.makeText(EditCourse.this, String.valueOf(selectedTerm), Toast.LENGTH_SHORT).show();
-
                 int termID = termDAO.getTermIDByTitle(selectedTerm);
 
-                Toast.makeText(EditCourse.this, String.valueOf(termID), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(EditCourse.this, String.valueOf(termID), Toast.LENGTH_SHORT).show();
 
 
                 courseDAO.updateCourseByID(courseID, courseTitle, courseInstructorName, courseInstructorEmail, courseInstructorPhone, courseStatus, courseStartDate, courseEndDate, courseNote, termID);

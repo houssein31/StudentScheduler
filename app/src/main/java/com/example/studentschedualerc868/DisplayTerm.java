@@ -48,7 +48,7 @@ public class DisplayTerm extends AppCompatActivity {
             termID = extras.getInt("termID");
         }
 
-        Toast.makeText(this, String.valueOf(username), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, String.valueOf(username), Toast.LENGTH_SHORT).show();
         termDAO = DatabaseConn.getDBInstance(getApplicationContext()).getTermDao();
         courseDAO = DatabaseConn.getDBInstance(getApplicationContext()).getCourseDao();
 

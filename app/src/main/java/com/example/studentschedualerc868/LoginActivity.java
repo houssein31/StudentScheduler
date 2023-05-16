@@ -53,42 +53,33 @@ public class LoginActivity extends AppCompatActivity {
 
         setTitle("Log in");
 
-        // Initialize userDAO
         userDAO = DatabaseConn.getDBInstance(getApplicationContext()).getUserDAO();
 
-        // Get views
         userName = findViewById(R.id.loginUsernameEditText);
         passWord = findViewById(R.id.loginPasswordEditText);
         enter = findViewById(R.id.enterButton);
 
-        // Set up login button click listener
         enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Get entered username and password
                 String username = userName.getText().toString();
                 String password = passWord.getText().toString();
 
-                // Get user from database
                 User user = userDAO.getUserByUsername(username);
 
-                // Check if user exists
                 if (user == null) {
                     Toast.makeText(LoginActivity.this, "User not found", Toast.LENGTH_SHORT).show();
                     return; // Exit the method without logging in
                 }
 
-                // Check if password is correct
                 if (!password.equals(user.getPassword())) {
                     Toast.makeText(LoginActivity.this, "Incorrect password", Toast.LENGTH_SHORT).show();
                     return; // Exit the method without logging in
                 }
 
                 String fullName = userDAO.getFullName(username);
-                // User logged in successfully
                 Toast.makeText(LoginActivity.this, "Logged in as " + fullName, Toast.LENGTH_SHORT).show();
 
-                // Start the main activity
                 Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                 intent.putExtra("username", username);
                 startActivity(intent);

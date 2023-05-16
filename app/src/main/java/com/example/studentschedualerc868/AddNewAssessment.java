@@ -180,7 +180,7 @@ public class AddNewAssessment extends AppCompatActivity {
         courseID = courseDAO.getCourseIDByTitle(selectedCourse);
 
         Assessment assessment = new Assessment(courseID, assessmentTitle, assessmentType, assessmentStatus, assessmentEndDate, assessmentNote);
-        Toast.makeText(this, String.valueOf(assessment), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, String.valueOf(assessment), Toast.LENGTH_SHORT).show();
         assessmentDAO.insertAssessment(assessment);
         launchMultiPageActivity();
         super.finish();

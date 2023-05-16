@@ -225,11 +225,10 @@
 
             <!-- The first button -->
             <Button
-                android:id="@+id/set_alarm"
+                android:id="@+id/set_alarm1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:onClick="setAlarmForAssessment"
                 android:text="Set Alarm"
                 android:textAllCaps="false" />
 
@@ -246,7 +245,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="1"
-                android:onClick="shareNote"
                 android:text="Share Notes"
                 android:textAllCaps="false" />
 
@@ -256,7 +254,6 @@
             android:id="@+id/edit_assessment_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="shareAssessmentNote"
             android:text="Edit Assessment"
             android:textAllCaps="false"
 

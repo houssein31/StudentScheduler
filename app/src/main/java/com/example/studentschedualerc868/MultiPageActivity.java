@@ -93,7 +93,6 @@ public class MultiPageActivity extends AppCompatActivity implements RecyclerView
                     int termID = termList.get(position).getTermId();
 
                     if (termDAO.hasCourse(termID)) {
-                        // Show a pop-up dialog if the term contains courses
                         AlertDialog.Builder builder = new AlertDialog.Builder(MultiPageActivity.this);
                         builder.setMessage("This term cannot be deleted because it has courses associated with it. Delete all courses associated with this term and then delete it.")
                                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -222,16 +221,10 @@ public class MultiPageActivity extends AppCompatActivity implements RecyclerView
 
         switch (type){
             case "Terms":
-//                termList = termDAO.getAllTerms();
                 termListAdapter = new TermListAdapter(this, termList, this);
                 recyclerView.setAdapter(termListAdapter);
                 break;
             case "Courses":
-//                List<Integer> termIds = new ArrayList<>();
-//                for (Term term : termList) {
-//                    termIds.add(term.getTermId());
-//                }
-//                courseList = courseDAO.getCoursesByTermList(termIds);
                 courseListAdapter = new CourseListAdapter(this.getApplicationContext(), courseList, this);
                 recyclerView.setAdapter(courseListAdapter);
                 break;
@@ -240,36 +233,11 @@ public class MultiPageActivity extends AppCompatActivity implements RecyclerView
                 for (Course course : courseList) {
                     courseIds.add(course.getCourseID());
                 }
-                assessmentList = assessmentDAO.getAssessmentsByCourseList(courseIds);
-//                Toast.makeText(this, String.valueOf(assessmentList), Toast.LENGTH_SHORT).show();
+                assessmentList = assessmentDAO.getAssessmentsByCourseIdList(courseIds);
                 assessmentListAdapter = new AssessmentListAdapter(this.getApplicationContext(), assessmentList, this);
                 recyclerView.setAdapter(assessmentListAdapter);
                 break;
         }
-//        switch (type){
-//            case "Terms":
-//                termListAdapter = new TermListAdapter(this.getApplicationContext(), termList, this);
-//                recyclerView.setAdapter(termListAdapter);
-//                break;
-//            case "Courses":
-//                List<Integer> termIds = new ArrayList<>();
-//                for (Term term : termList) {
-//                    termIds.add(term.getTermId());
-//                }
-//                courseList = courseDAO.getCoursesByTermList(termIds);
-//                courseListAdapter = new CourseListAdapter(this.getApplicationContext(), courseList, this);
-//                recyclerView.setAdapter(courseListAdapter);
-//                break;
-//            case "Assessments":
-//                List<Integer> courseIds = new ArrayList<>();
-//                for (Course course : courseList) {
-//                    courseIds.add(course.getCourseID());
-//                }
-//                assessmentList = assessmentDAO.getAssessmentsByCourseList(courseIds);
-//                assessmentListAdapter = new AssessmentListAdapter(this.getApplicationContext(), assessmentList, this);
-//                recyclerView.setAdapter(assessmentListAdapter);
-//                break;
-//        }
 
     }
 
@@ -312,7 +280,7 @@ public class MultiPageActivity extends AppCompatActivity implements RecyclerView
             case "Assessments":
                 Intent intentAssessment = new Intent(MultiPageActivity.this, DisplayAssessment.class);
                 intentAssessment.putExtra("username", username);
-                Toast.makeText(this, String.valueOf(username), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, String.valueOf(username), Toast.LENGTH_SHORT).show();
                 intentAssessment.putExtra("assessmentID", assessmentList.get(position).getAssessmentID());
                 startActivity(intentAssessment);
                 break;

@@ -43,11 +43,8 @@ public interface CourseDAO {
     @Query("SELECT * FROM course WHERE term_id IN (:termIds)")
     List<Course> getCoursesByTermIdList(List<Integer> termIds);
 
-    @Query("SELECT course_ID FROM course WHERE term_id IN (:termId)")
-    List<Integer> getCoursesByTermList(List<Integer> termId);
-
-//    @Query("SELECT * FROM course WHERE user_name = :username")
-//    List<Course> getCoursesByUsername(String username);
+    @Query("SELECT * FROM course WHERE term_ID IN (:termIds)")
+    List<Course> getCoursesByTermList(List<Integer> termIds);
 
     @Query("UPDATE course SET course_title = :courseTitle, course_instructor_name = :courseInstructorName, course_instructor_email = :courseInstructorEmail, course_instructor_phone = :courseInstructorPhone, course_status = :courseStatus, course_start_date = :courseStartDate, course_end_date = :courseEndDate , course_note = :courseNote, term_ID = :termID WHERE course_id = :id")
     void updateCourseByID(int id, String courseTitle, String courseInstructorName, String courseInstructorEmail, String courseInstructorPhone, String courseStatus, String courseStartDate, String courseEndDate, String courseNote, int termID);
@@ -57,6 +54,5 @@ public interface CourseDAO {
 
     @Query("SELECT course_ID FROM course WHERE term_id IN (:termIDs)")
     List<Integer> searchCourseIDsAmongTerms(List<Integer> termIDs);
-
 
 }

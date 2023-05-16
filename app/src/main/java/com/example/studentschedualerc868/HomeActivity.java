@@ -1,9 +1,34 @@
 package com.example.studentschedualerc868;
 
+import static com.itextpdf.kernel.xmp.XMPDateTimeFactory.getCurrentDateTime;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.studentschedualerc868.db.DAOs.UserDAO;
+import com.example.studentschedualerc868.db.Entities.User;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.element.Cell;
+//import com.itextpdf.layout.property.HorizontalAlignment;
+
+
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,12 +38,39 @@ import android.widget.Toast;
 //import android.widget.Toolbar;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.studentschedualerc868.db.DAOs.AssessmentDAO;
+import com.example.studentschedualerc868.db.DAOs.CourseDAO;
+import com.example.studentschedualerc868.db.DAOs.TermDAO;
+import com.example.studentschedualerc868.db.DatabaseConn;
+import com.example.studentschedualerc868.db.Entities.Assessment;
+import com.example.studentschedualerc868.db.Entities.Course;
+import com.example.studentschedualerc868.db.Entities.Term;
+import com.itextpdf.io.image.ImageData;
+import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.colors.DeviceRgb;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.borders.Border;
+import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.property.TextAlignment;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 public class HomeActivity extends AppCompatActivity {
 
     Button termBtn, courseBtn, assessmentBtn;
     TextView tv;
     String username;
     int age;
+    UserDAO userDAO;
+    TermDAO termDAO;
+    CourseDAO courseDAO;
+    AssessmentDAO assessmentDAO;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +129,6 @@ public class HomeActivity extends AppCompatActivity {
 
     public void launchAssessment(View v) {
         //Launch Assessments
-
         Intent i = new Intent(this, MultiPageActivity.class);
         i.putExtra("type", assessmentBtn.getText());
         i.putExtra("username", username);
@@ -86,8 +137,6 @@ public class HomeActivity extends AppCompatActivity {
 
     private void launchMainActivity() {
         Intent i = new Intent(this, MainActivity.class);
-//        i.putExtra("type", "Terms");
-//        i.putExtra("username", username);
 
         startActivity(i);
         super.finish();
@@ -97,7 +146,6 @@ public class HomeActivity extends AppCompatActivity {
         Intent intent = new Intent(this, SearchActivity.class);
         intent.putExtra("username", username);
         startActivity(intent);
-
     }
 
     @Override
@@ -107,35 +155,131 @@ public class HomeActivity extends AppCompatActivity {
 //        super.finish();
     }
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        if (item.getItemId() == android.R.id.home) {
-//            onBackPressed();
-//            return true;
-//        }
-//        return false;
-//    }
+    public void exportPdf(View view) {
+        String fileName = username + "-report-" + getCurrentDateTime() +".pdf";
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        int itemId = item.getItemId();
-//        if (itemId == R.id.action_search) {
-//            // Perform search action
-//            performSearch();
-//            return true;
-//        } else if (itemId == android.R.id.home) {
-//            // Handle back button click if needed
-//            onBackPressed();
-//            return true;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
-//
-//    private void performSearch() {
-//        // Perform the search action
-//        // For example, open a search activity or display a search dialog
-//        // ...
-//        Toast.makeText(this, "Hello!", Toast.LENGTH_SHORT).show();
-//    }
+        // Define the content resolver and content values for inserting the PDF file into the downloads directory
+        ContentResolver contentResolver = getApplicationContext().getContentResolver();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(MediaStore.Downloads.DISPLAY_NAME, fileName);
+        contentValues.put(MediaStore.Downloads.MIME_TYPE, "application/pdf");
+        contentValues.put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS);
+
+        termDAO = DatabaseConn.getDBInstance(getApplicationContext()).getTermDao();
+        courseDAO = DatabaseConn.getDBInstance(getApplicationContext()).getCourseDao();
+        assessmentDAO = DatabaseConn.getDBInstance(getApplicationContext()).getAssessmentDao();
+        userDAO = DatabaseConn.getDBInstance(getApplicationContext()).getUserDAO();
+
+        List<Term> termList = termDAO.getTermsByUsername(username);
+        List<Integer> termIds = new ArrayList<>();
+
+        for (Term term : termList) {
+            termIds.add(term.getTermId());
+        }
+        List<Course> courseList = courseDAO.getCoursesByTermList(termIds);
+        List<Integer> courseIds = new ArrayList<>();
+        for (Course course : courseList) {
+            courseIds.add(course.getCourseID());
+        }
+        List<Assessment> assessmentList = assessmentDAO.getAssessmentByCourseList(courseIds);
+
+        try {
+            // Create a new PDF file using the path defined
+            PdfWriter writer = null;
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                writer = new PdfWriter(contentResolver.openOutputStream(contentResolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)));
+            }
+
+            PdfDocument pdfDoc = new PdfDocument(writer);
+
+            // Create a new page in the PDF document
+            Document document = new Document(pdfDoc);
+
+            Paragraph title = new Paragraph("Student Scheduler");
+            title.setFontSize(20f);
+            title.setBold();
+            title.setTextAlignment(TextAlignment.CENTER);
+            document.add(title);
+
+            document.add(new Paragraph());
+
+            // Retrieve user information from UserDAO
+            User user = userDAO.getUserByUsername(username);
+            String fullName = user.getFullname();
+            String username = user.getUsername();
+
+            // Add user information as a field above the table
+            Paragraph userInfo = new Paragraph("Full Name: " + fullName + "\nUsername: " + username);
+            document.add(userInfo);
+
+            document.add(new Paragraph());
+
+            Table termTable = new Table(3);
+
+            termTable.addCell("Term Title");
+            termTable.addCell("Term Start Date");
+            termTable.addCell("Term End Date");
+            for (Term term : termList) {
+                termTable.addCell(term.getTermTitle());
+                termTable.addCell(term.getTermStartDate().toString());
+                termTable.addCell(term.getTermEndDate().toString());
+            }
+
+            document.add(new Paragraph());
+
+            Table courseTable = new Table(7);
+
+            courseTable.addCell("Course Title");
+            courseTable.addCell("Course Instructor Name");
+            courseTable.addCell("Course Instructor Email");
+            courseTable.addCell("Course Instructor Phone");
+            courseTable.addCell("Course Status");
+            courseTable.addCell("Course Start Date");
+            courseTable.addCell("Course End Date");
+            for (Course course : courseList) {
+                courseTable.addCell(course.getCourseTitle());
+                courseTable.addCell(course.getCourseInstructorName());
+                courseTable.addCell(course.getCourseInstructorEmail());
+                courseTable.addCell(course.getCourseInstructorPhone());
+                courseTable.addCell(course.getCourseStatus());
+                courseTable.addCell(course.getCourseStartDate());
+                courseTable.addCell(course.getCourseEndDate());
+            }
+
+            document.add(new Paragraph());
+
+            Table assessmentTable = new Table(4);
+
+            assessmentTable.addCell("Assessment Title");
+            assessmentTable.addCell("Assessment Type");
+            assessmentTable.addCell("Assessment Status");
+            assessmentTable.addCell("Assessment End Date");
+            for (Assessment assessment : assessmentList) {
+                assessmentTable.addCell(assessment.getAssessmentTitle());
+                assessmentTable.addCell(assessment.getAssessmentType());
+                assessmentTable.addCell(assessment.getAssessmentStatus());
+                assessmentTable.addCell(assessment.getAssessmentEndDate());
+            }
+
+            document.add(termTable);
+            document.add(new Paragraph("\n"));
+            document.add(courseTable);
+            document.add(new Paragraph("\n"));
+            document.add(assessmentTable);
+            document.add(new Paragraph("\n"));
+
+            // Closing the document
+            document.close();
+
+            // Display a toast message to indicate that the PDF file has been created and saved
+            Toast.makeText(this, "PDF file saved to " + Environment.DIRECTORY_DOWNLOADS + "/" + fileName, Toast.LENGTH_LONG).show();
+
+        } catch (Exception e) {
+            // Display a toast message to indicate that an error occurred while creating the PDF file
+            Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
 
 }

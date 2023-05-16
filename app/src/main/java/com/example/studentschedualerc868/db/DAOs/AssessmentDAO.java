@@ -40,13 +40,12 @@ public interface AssessmentDAO {
     void updateAssessmentByID(int id, String title, String type, String status, String endDate, String note, int courseID);
 
     @Query("SELECT * FROM assessment WHERE course_ID IN (:courseIds)")
-    List<Assessment> getAssessmentsByCourseList(List<Integer> courseIds);
+    List<Assessment> getAssessmentsByCourseIdList(List<Integer> courseIds);
 
-//    @Query("SELECT * FROM assessment WHERE assessment_title LIKE '%' || :title || '%' AND course_ID IN (:courseIDs) ")
-//    List<Assessment> searchAssessmentsByTitleAmongCourses(List<Integer> courseIDs, String title);
+    @Query("SELECT * FROM assessment WHERE course_ID IN (:courseIds)")
+    List<Assessment> getAssessmentByCourseList(List<Integer> courseIds);
 
     @Query("SELECT * FROM assessment WHERE assessment_title LIKE '%' || :title || '%' AND course_ID IN (:courseIDs)")
     List<Assessment> searchAssessmentsByTitleAmongCourses(List<Integer> courseIDs, String title);
-
 
 }

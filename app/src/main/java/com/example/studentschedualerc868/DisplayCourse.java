@@ -144,12 +144,6 @@ public class DisplayCourse extends AppCompatActivity {
 
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.my_menu, menu);
-//        return true;
-//    }
-
     private void initRecyclerView() {
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);

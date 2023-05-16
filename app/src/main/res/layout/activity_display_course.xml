@@ -298,13 +298,12 @@
 
             <!-- The first button -->
             <Button
-                android:id="@+id/set_course_alarm_button"
+                android:id="@+id/set_course_alarm_button1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Set Alarm"
-                android:textAllCaps="false"
-                android:onClick="setAlarmForCourse" />
+                android:text="Empty"
+                android:textAllCaps="false" />
 
             <!-- A view that takes up remaining space -->
             <View
@@ -319,14 +318,11 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_gravity="center_horizontal"
-                android:onClick="shareNote"
                 android:text="Share Notes"
                 android:textAllCaps="false" />
 
         </LinearLayout>
 
-
-        <!-- The original edit_course_button -->
         <Button
             android:id="@+id/edit_course_button"
             android:layout_width="match_parent"
@@ -334,25 +330,10 @@
             android:text="Edit Course"
             android:textAllCaps="false"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:onClick="editCourse" />
+            android:layout_centerHorizontal="true" />
 
 
     </RelativeLayout>
-
-    <!--<Button-->
-    <!--android:id="@+id/add_new_item_button"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--app:layout_constraintStart_toStartOf="parent"-->
-    <!--app:layout_constraintEnd_toEndOf="parent"-->
-    <!--app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--android:text="Add New Item"-->
-    <!--android:textAllCaps="false"-->
-    <!--android:onClick="addItem" />-->
-
-    <!--    </LinearLayout>-->
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

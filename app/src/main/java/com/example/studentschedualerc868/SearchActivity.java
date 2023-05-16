@@ -64,16 +64,13 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void performSearch() {
-        // Get the search query
         searchQuery = searchEditText.getText().toString().trim();
 
-        // Check if the search query is empty
         if (searchQuery.isEmpty()) {
             Toast.makeText(this, "Please enter a search query", Toast.LENGTH_SHORT).show();
             return; // Exit the method if the search query is empty
         }
 
-        // Get the selected search category
         int selectedRadioButtonId = searchRadioGroup.getCheckedRadioButtonId();
         if (selectedRadioButtonId == R.id.terms_radio) {
             selectedCategory = SEARCH_CATEGORY_TERMS;
@@ -83,7 +80,6 @@ public class SearchActivity extends AppCompatActivity {
             selectedCategory = SEARCH_CATEGORY_ASSESSMENTS;
         }
 
-        // Perform the search based on the selected category
         switch (selectedCategory) {
             case SEARCH_CATEGORY_TERMS:
                 searchTerms(searchQuery);
@@ -101,13 +97,10 @@ public class SearchActivity extends AppCompatActivity {
         TermDAO termDAO = DatabaseConn.getDBInstance(getApplicationContext()).getTermDao();
         List<Term> searchResults = termDAO.searchTermsByTitleAndUserName(query, username);
 
-        // Handle the search results
 
-        // Initialize the RecyclerView
         RecyclerView searchRecyclerView = findViewById(R.id.search_recyclerView);
         searchRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Create the adapter and set it on the RecyclerView
         TermListAdapter termListAdapter = new TermListAdapter(this, searchResults, new RecyclerViewInterface() {
             @Override
             public void onItemClick(int position) {
@@ -128,13 +121,10 @@ public class SearchActivity extends AppCompatActivity {
         CourseDAO courseDAO = DatabaseConn.getDBInstance(getApplicationContext()).getCourseDao();
         List<Course> searchResults = courseDAO.searchCoursesByTitleAmongTerms(termDAO.getTermIdsByUsername(username), query);
 
-        // Handle the search results
 
-        // Initialize the RecyclerView
         RecyclerView searchRecyclerView = findViewById(R.id.search_recyclerView);
         searchRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Create the adapter and set it on the RecyclerView
         CourseListAdapter courseListAdapter = new CourseListAdapter(this, searchResults, new RecyclerViewInterface() {
             @Override
             public void onItemClick(int position) {
@@ -156,11 +146,9 @@ public class SearchActivity extends AppCompatActivity {
 
         List<Assessment> searchResults = assessmentDAO.searchAssessmentsByTitleAmongCourses(courseDAO.searchCourseIDsAmongTerms(termDAO.getTermIdsByUsername(username)), query);
 
-                // Initialize the RecyclerView
         RecyclerView searchRecyclerView = findViewById(R.id.search_recyclerView);
         searchRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Create the adapter and set it on the RecyclerView
         AssessmentListAdapter assessmentListAdapter = new AssessmentListAdapter(this, searchResults, new RecyclerViewInterface() {
             @Override
             public void onItemClick(int position) {
@@ -187,7 +175,6 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         launchHomeActivity();
-//        super.finish();
     }
 
     @Override

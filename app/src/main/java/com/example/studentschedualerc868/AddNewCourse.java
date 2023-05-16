@@ -37,8 +37,6 @@ public class AddNewCourse extends AppCompatActivity {
     ArrayAdapter<String> adapterItems;
     private DatePickerDialog startDatePickerDialog,endDatePickerDialog;
     private DatePickerDialog courseStartDatePickerDialog, courseEndDatePickerDialog;
-
-
     private Button courseStartDateButton;
     private Button courseEndDateButton;
     private Button startDateButton;

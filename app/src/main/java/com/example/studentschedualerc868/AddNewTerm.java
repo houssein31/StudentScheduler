@@ -56,7 +56,7 @@ public class AddNewTerm extends AppCompatActivity {
             }
         });
 
-        Toast.makeText(this, username.toString(), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, username.toString(), Toast.LENGTH_SHORT).show();
 
 
     }
